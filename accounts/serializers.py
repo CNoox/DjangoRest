@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from home.models import User
 
 
 
@@ -9,7 +9,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', 'password','password2')
         extra_kwargs = {
-            'password': {'write_only': True},
+            'password': {'write_only': True,'required': True},
             'email': {'required': True},
             'username': {'required': True}
         }
@@ -25,3 +25,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if data ['password'] != data['password2']:
             raise serializers.ValidationError('passwords do not match')
         return data
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+

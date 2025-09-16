@@ -1,0 +1,8 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+pyyaml
+uritemplate
+inflection
+drf-spectacular
+pillow
