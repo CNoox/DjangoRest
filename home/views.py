@@ -16,8 +16,8 @@ class HomeView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         users = User.objects.all()
-        page_num = self.request.query_params.get('page',1)
-        page_limit = self.request.query_params.get('limit',2)
+        page_num = request.query_params.get('page',1)
+        page_limit = request.query_params.get('limit',2)
         paginator = Paginator(users,page_limit)
         ser_person = UserSerializer(instance=paginator.page(page_num) ,many=True).data
         return Response(data=ser_person)
@@ -68,12 +68,6 @@ class UserPhotoViewSet(viewsets.ViewSet):
 
         if photo_data.user != request.user:
             return Response({'detail': 'You dont have permission!'}, status=status.HTTP_403_FORBIDDEN)
-
-        if 'photo' in request.FILES:
-            old_photo = photo_data.photo
-            if old_photo and old_photo.name != 'profiles/':
-                if os.path.isfile(old_photo.path):
-                    os.remove(old_photo.path)
 
         ser_photo = UserPhotoSerializer(
             instance=photo_data,
